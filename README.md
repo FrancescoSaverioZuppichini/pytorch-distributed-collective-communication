@@ -78,11 +78,11 @@ Will output
 
 ## Reduce
 
-The reduce operation in torch.distributed is used to combine tensors from multiple GPUs or processes into a single tensor on one of the GPUs or processes. The reduce operation applies a specified reduction operation (e.g. sum, product, max) element-wise to the input tensors and returns the result on a single GPU or process, known as the root rank. The root rank is specified as an argument when calling the reduce function.
+The `reduce` operation in `torch.distributed` is used to combine tensors from multiple GPUs or processes into a single tensor on one of the GPUs or processes. The reduce operation applies a specified reduction operation (e.g. sum, product, max) element-wise to the input tensors and returns the result on a single GPU or process, known as the root rank. The root rank is specified as an argument when calling the `reduce` function.
 
 ![img](images/Reduce.png)
 
-In the figure, we have `4` process and we reduce all the tensors to `rank0`.  Each process has a tensor with one.
+In the figure, we have `4` process and we reduce all the tensors to `rank0`. Each process has a tensor with `1`.
 
 ```python
 def do_reduce(rank: int, size: int):
@@ -112,9 +112,9 @@ The `op` to `dist.reduce` argument specifies the reduction operation, which in t
 It's important to notice that the reduce operation is done between the tensors on different devices, the root rank need to have a copy of the tensor on the local memory to perform the operation on it, in our case `tensor`.
 
 ## All Reduce
-The all_reduce operation in torch.distributed is similar to the reduce operation, but instead of returning the result on a single GPU or process, it returns the result on all GPUs or processes.
+The `all_reduce` operation in `torch.distributed` is similar to the reduce operation, but instead of returning the result on a single GPU or process, it returns the result on all GPUs or processes.
 
-Like the reduce operation, all_reduce applies a specified reduction operation (e.g. sum, product, max) element-wise to the input tensors and returns the result on all GPUs or processes. This allows for easy computation of values such as the mean or sum of a tensor across all GPUs or process
+Like the reduce operation, `all_reduce` applies a specified reduction operation (e.g. sum, product, max) element-wise to the input tensors and returns the result on all GPUs or processes. This allows for easy computation of values such as the mean or sum of a tensor across all GPUs or process.
 
 ![img](images/All%20Reduce.png)
 
