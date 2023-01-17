@@ -1,6 +1,10 @@
 # Collective Communication in Distributed Systems with PyTorch
 
-Today, we will explore the use of [PyTorch](https://pytorch.org/get-started/locally/)'s distributed collective communication feature. When working with multiple GPUs, it is necessary to share tensors across them, which is where [`torch.distributed`](https://pytorch.org/tutorials/intermediate/dist_tuto.html) comes in. It provides a set of APIs to send and receive tensors among multiple workers. Typically, a worker is a process responsible for a specific GPU. When training neural networks on multiple GPUs, it is often necessary to collect tensors across multiple GPUs/processors. A common example is when computing gradients across multiple GPUs to perform an optimizer step. In this case, we must first send all gradients to all GPUs, average them, and then perform a local optimizer step. This is precisely what the `all reduce `function does, but more on that later. We will provide figures and code examples for each of the six collection strategies in `torch.dist`: `reduce`, `all reduce`, `scatter`, `gather`, `all gather` and `broadcast`.
+Today, we will explore the use of [PyTorch](https://pytorch.org/get-started/locally/)'s distributed collective communication feature. When working with multiple GPUs, it is necessary to share tensors across them, which is where [`torch.distributed`](https://pytorch.org/tutorials/intermediate/dist_tuto.html) comes in. It provides a set of APIs to send and receive tensors among multiple workers. Typically, a worker is a process responsible for a specific GPU. 
+
+When training neural networks on multiple GPUs, it is often necessary to collect tensors across multiple GPUs/processors. A common example is when computing gradients across multiple GPUs to perform an optimizer step. In this case, we must first send all gradients to all GPUs, average them, and then perform a local optimizer step. This is precisely what the `all reduce `function does, but more on that later. 
+
+We will provide figures and code examples for each of the six collection strategies in `torch.dist`: `reduce`, `all reduce`, `scatter`, `gather`, `all gather` and `broadcast`.
 
 ## Setup
 
