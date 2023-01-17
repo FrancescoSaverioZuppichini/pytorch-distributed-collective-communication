@@ -1,6 +1,5 @@
 # Collective Communication in Distributed Systems with PyTorch
 
-
 Today, we will explore the use of [PyTorch]](https://pytorch.org/get-started/locally/)'s distributed collective communication feature. When working with multiple GPUs, it is necessary to share tensors across them, which is where [`torch.distributed`](https://pytorch.org/tutorials/intermediate/dist_tuto.html) comes in. It provides a set of APIs to send and receive tensors among multiple workers. Typically, a worker is a process responsible for a specific GPU. When training neural networks on multiple GPUs, it is often necessary to collect tensors across multiple GPUs/processors. A common example is when computing gradients across multiple GPUs to perform an optimizer step. In this case, we must first send all gradients to all GPUs, average them, and then perform a local optimizer step. This is precisely what the `all reduce `function does, but more on that later. We will provide figures and code examples for each of the six collection strategies in `torch.dist`: `reduce`, `all reduce`, `scatter`, `gather`, `all gather` and `broadcast`.
 
 ## Setup
@@ -144,7 +143,12 @@ outputs:
 Each process has the reduced value (`4`).
 
 ## Scatter
+
+The `scatter` operation in `torch.distributed` is used to divide a tensor on one GPU or process, known as the root rank, and send a portion of it to each other GPU or process. The root rank is specified as an argument when calling the scatter function.
+
 ![img](images/Scatter.png)
+
+The code,
 
 ```python
 def do_scatter(rank: int, size: int):
@@ -161,6 +165,17 @@ def do_scatter(rank: int, size: int):
     # each rank will have a tensor with their rank number
     print(f"[{rank}] data = {tensor[0]}")
 ```
+
+outputs:
+
+```
+[2] data = 3.0
+[1] data = 2.0
+[3] data = 4.0
+[0] data = 1.0
+```
+
+The `scatter` function is useful when you want to split a large tensor into smaller chunks and distribute them across multiple GPUs or processes. For example, you can use it to split a large batch of data into smaller chunks for parallel processing.
 
 ## Gather
 The `gather` operation in `torch.distributed` is used to collect tensors from multiple GPUs or processes and concatenate them into a single tensor on one of the GPUs or processes, known as the root rank. The root rank is specified as an argument when calling the gather function.
